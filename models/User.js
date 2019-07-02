@@ -19,10 +19,6 @@ const User = sequelize.define("User", {
   password: {
     type: Sequelize.STRING,
     required: true
-  },
-  date: {
-    type: Sequelize.DATE,
-    deadline: Sequelize.DATE
   }
 });
 
