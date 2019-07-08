@@ -1,4 +1,4 @@
-const localStrategy = require("passport-local").Strategy;
+const LocalStrategy = require("passport-local").Strategy;
 const sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
 
@@ -7,7 +7,7 @@ const User = require("../models/User");
 
 module.exports = function(passport) {
   passport.use(
-    new localStrategy({ usernameField: "email" }, (email, password, done) => {
+    new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
       User.findOne({ where: { email: email } })
         .then((user) => {
           if (!user) {
@@ -28,12 +28,15 @@ module.exports = function(passport) {
     })
   );
 
-  passport.serializeUser((user, done)=>{
+  passport.serializeUser((user, done) => {
+    console.log(user.id);
+    console.log(user.name);
     done(null, user.id);
   });
 
-  passport.deserializeUser((id, done)=>{
-    User.findByPk(id, (err, user)=>{
+  passport.deserializeUser((id, done) => {
+    User.findByPk(id, (err, user) => {
+      console.log(user);
       done(err, user);
     });
   });

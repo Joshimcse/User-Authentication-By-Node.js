@@ -2,9 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const passport = require('passport')
-
-
+const passport = require("passport");
 router.get("/login", (req, res) => res.render("login"));
 
 router.get("/register", (req, res) => res.render("register"));
@@ -33,7 +31,7 @@ router.post("/register", (req, res) => {
       email,
       password,
       password2
-    })
+    });
   } else {
     User.findOne({ where: { email: email } })
       .then((user) => {
@@ -69,13 +67,20 @@ router.post("/register", (req, res) => {
   }
 });
 
-
-router.post('/login', (req, res,next) => {
+//login handler
+router.post("/login", (req, res, next) => {
   passport.authenticate('local', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/users/login',
-    failureFlash:true
-  })(req,res,next)
-})
+    successRedirect: "/dashboard",
+    failureRedirect: "/users/login",
+    failureFlash: true
+  })(req, res,next);
+});
+
+//logout Handler
+router.get("/logout", (req, res) => {
+  req.logout();
+  req.flash("success_msg", "You are logged out");
+  res.redirect("/users/login");
+});
 
 module.exports = router;
